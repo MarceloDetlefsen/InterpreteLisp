@@ -7,7 +7,7 @@ import java.util.List;
  * Ing. Douglas Barrios
  * @author: Marcelo Detlefsen, Jose Rivera, Fabián Prado
  * Creación: 11/03/2025
- * última modificación: 15/03/2025
+ * última modificación: 18/03/2025
  * File Name: Parser.java
  * Descripción: Clase que se encarga de analizar la expresión LISP.
  * 
@@ -50,12 +50,37 @@ public class Parser
         if (currentTokenIndex >= tokens.size()) {
             throw new RuntimeException("Unexpected end of input");
         }
+        
+        // Comprobar si la expresión comienza con comilla simple
+        if (peek().getValue().equals("'")) {
+            consume("'");
+            ASTNode quoteNode = new ASTNode("QUOTE");
+            
+            // Si lo que sigue es un paréntesis, analizamos la expresión dentro
+            if (peek().getValue().equals("(")) {
+                quoteNode.addChild(parseExpression());
+            } else {
+                // Si no es un paréntesis, es un símbolo atomico
+                quoteNode.addChild(parseAtom(consumeAny().getValue()));
+            }
+            
+            return quoteNode;
+        }
     
         if (!peek().getValue().equals("(")) {
             throw new RuntimeException("Expected '(' at position " + currentTokenIndex + " but found " + peek().getValue());
         }
     
         consume("(");
+    
+        // Si el siguiente token es ', lo convertimos en QUOTE
+        if (peek().getValue().equals("'")) {
+            consume("'");
+            ASTNode quoteNode = new ASTNode("QUOTE");
+            quoteNode.addChild(parseExpression());
+            consume(")");
+            return quoteNode;
+        }
     
         if (peek().getValue().equals("QUOTE")) {
             consumeAny(); // Consume el token QUOTE
@@ -75,7 +100,7 @@ public class Parser
         else { // si no es quote: 
             Token firstToken = consumeAny();
             ASTNode node = new ASTNode(firstToken.getValue());
-
+    
             while (!peek().getValue().equals(")")) {
                 if (peek().getValue().equals("(")) {
                     node.addChild(parseExpression());
@@ -85,7 +110,7 @@ public class Parser
                     node.addChild(parseAtom(rawValue));
                 }
             }
-
+    
             consume(")");
             return node; // devuelve el nodo principal
         }
