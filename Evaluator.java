@@ -9,7 +9,7 @@ import java.util.Map;
  * Ing. Douglas Barrios
  * @author: Marcelo Detlefsen, Jose Rivera, Fabián Prado
  * Creación: 17/03/2025
- * última modificación: 17/03/2025
+ * última modificación: 19/03/2025
  * File Name: Evaluator.java
  * Descripción: Clase que se encarga de evaluar el árbol de sintaxis abstracta.
  * 
@@ -236,11 +236,9 @@ public class Evaluator {
             // Buscar en el ámbito si es una variable o función
             Object lookupResult = scope.getVariable(value);
             if (lookupResult != null) {
-                if (lookupResult instanceof Object[]) {
+                if (lookupResult instanceof Function) {
                     // Si es una función, ejecutarla con los argumentos
-                    Object[] funcData = (Object[]) lookupResult;
-                    ASTNode params = (ASTNode) funcData[0];
-                    List<ASTNode> body = (List<ASTNode>) funcData[1];
+                    Function function = (Function) lookupResult;
                     
                     // Evaluar los argumentos
                     List<Object> args = new ArrayList<>();
@@ -248,26 +246,8 @@ public class Evaluator {
                         args.add(evaluate(child, scope));
                     }
                     
-                    // Crear un nuevo ámbito para la función
-                    ContextualScope functionScope = scope.createSubScope();
-                    
-                    // Asignar los argumentos a los parámetros
-                    List<ASTNode> paramNodes = params.getChildren();
-                    if (args.size() != paramNodes.size()) {
-                        throw new RuntimeException("Número incorrecto de argumentos: esperados " + 
-                                                paramNodes.size() + ", recibidos " + args.size());
-                    }
-                    for (int i = 0; i < args.size(); i++) {
-                        functionScope.setVariable(paramNodes.get(i).getValue(), args.get(i));
-                    }
-                    
-                    // Evaluar el cuerpo de la función
-                    Object result = null;
-                    for (ASTNode bodyNode : body) {
-                        result = evaluate(bodyNode, functionScope);
-                    }
-                    
-                    return result;
+                    // Ejecutar la función con los argumentos evaluados
+                    return executeFunction(function, args);
                 }
                 // Si es una variable, devolver su valor
                 return lookupResult;
@@ -507,6 +487,11 @@ public class Evaluator {
         
         public ContextualScope getParentScope() {
             return parentScope;
+        }
+        
+        @Override
+        public String toString() {
+            return "#<FUNCTION>";
         }
     }
 }

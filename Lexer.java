@@ -38,7 +38,8 @@ public class Lexer {
      */
     public List<Token> tokenize(String code) {
         tokens.clear();
-        Matcher matcher = Pattern.compile("\\(|\\)|[a-zA-Z]+|[0-9]+|[-+*/']").matcher(code);
+        // Actualizado el regex para capturar '<' y '>' como tokens separados
+        Matcher matcher = Pattern.compile("\\(|\\)|[a-zA-Z]+|[0-9]+|[-+*/']|<|>").matcher(code);
         while (matcher.find()) {
             tokens.add(new Token(matcher.group()));
         }
@@ -161,7 +162,7 @@ public class Lexer {
         boolean hasOperators = false;
         for (Token token : tokens) {
             String value = token.getValue();
-            if (operators.contains(value)) {
+            if (operators.contains(value) || value.equals("<") || value.equals(">")) {
                 hasOperators = true;
                 break;
             }

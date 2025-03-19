@@ -229,9 +229,14 @@ public class Main {
             return ((Boolean) result) ? "T" : "NIL";
         } else if (result instanceof ASTNode) {
             return formatASTNode((ASTNode) result);
-        } else {
-            return result.toString();
+        } else if (result instanceof Double) {
+            double d = (Double) result;
+            // Si es un número entero, mostrarlo sin decimal
+            if (d == Math.floor(d) && !Double.isInfinite(d)) {
+                return Integer.toString((int) d);
+            }
         }
+        return result.toString();
     }
     
     /**
