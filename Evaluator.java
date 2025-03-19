@@ -106,14 +106,26 @@ public class Evaluator {
             return null;
         } else if (value.equals("ATOM")) {
             // ATOM verifica si el argumento es un átomo (no es una lista)
-            if (children.size() != 1) {
+            if (children.size() == 1) {
+                // Caso regular: un solo argumento
+                Object result = evaluate(children.get(0), scope);
+                return !(result instanceof List<?>) && !(result instanceof ASTNode && ((ASTNode) result).getChildren().size() > 0);
+            } else if (children.size() == 2 && children.get(0).getValue().equals("'")) {
+                // Caso especial: expresión con comilla ('a o '(a b c))
+                ASTNode quotedNode = children.get(1);
+                // Si el nodo tiene hijos, es una lista, no un átomo
+                return quotedNode.getChildren().isEmpty();
+            } else {
                 throw new RuntimeException("ATOM requiere exactamente un argumento");
             }
-            Object result = evaluate(children.get(0), scope);
-            return !(result instanceof List);
         } else if (value.equals("LIST")) {
             // LIST verifica si el argumento es una lista
             if (children.size() != 1) {
+                // Si el primer hijo es la comilla ('), entonces estamos ante 'a, y debemos evaluar a como un argumento
+                if (children.size() == 2 && children.get(0).getValue().equals("'")) {
+                    Object result = children.get(1); // Tomar el valor directamente sin evaluar
+                    return result instanceof List;
+                }
                 throw new RuntimeException("LIST requiere exactamente un argumento");
             }
             Object result = evaluate(children.get(0), scope);
