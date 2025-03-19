@@ -262,47 +262,79 @@ public class Evaluator {
             
             return result;
         } else {
-            // Si no es un operador especial, buscar en el ámbito
-            // Podría ser una variable, una función o un valor literal
+            // Si no es un operador especial, puede ser:
+            // 1. Un número literal
+            // 2. Una variable o función definida
+            // 3. Una llamada a función usando una variable que contiene una función (caso crítico para aplicar)
             
-            // Si es un número, devolver su valor
+            // Probar si es un número literal
             try {
                 return Double.parseDouble(value);
             } catch (NumberFormatException e) {
-                // No es un número
+                // No es un número literal
             }
             
-            // Buscar en el ámbito si es una variable o función
+            // Buscar en el ámbito actual
             Object lookupResult = scope.getVariable(value);
+            
             if (lookupResult != null) {
-                if (lookupResult instanceof Function) {
-                    // Si es una función, ejecutarla con los argumentos
-                    Function function = (Function) lookupResult;
-                    
-                    // Evaluar los argumentos
-                    List<Object> args = new ArrayList<>();
-                    for (ASTNode child : children) {
-                        args.add(evaluate(child, scope));
+                // Si hay hijos, podría ser una llamada a función
+                if (!children.isEmpty()) {
+                    if (lookupResult instanceof Function) {
+                        // Caso normal: evaluando una función definida (como cuadrado)
+                        Function function = (Function) lookupResult;
+                        
+                        // Evaluar argumentos
+                        List<Object> args = new ArrayList<>();
+                        for (ASTNode child : children) {
+                            args.add(evaluate(child, scope));
+                        }
+                        
+                        // Ejecutar la función
+                        return executeFunction(function, args);
+                    } else {
+                        // CORRECCIÓN CLAVE: Si lookupResult no es una función
+                        // pero el nodo tiene hijos, podría ser una variable que contiene una función (como f en aplicar)
+                        
+                        // Evaluar los argumentos primero
+                        List<Object> args = new ArrayList<>();
+                        for (ASTNode child : children) {
+                            args.add(evaluate(child, scope));
+                        }
+                        
+                        // Ahora intentar resolver la función que está almacenada en la variable
+                        // Si lookupResult es un String, buscar ese nombre como función
+                        if (lookupResult instanceof String) {
+                            Object funcObj = scope.getVariable((String) lookupResult);
+                            if (funcObj instanceof Function) {
+                                return executeFunction((Function) funcObj, args);
+                            }
+                        }
+                        
+                        // Si lookupResult es directamente una función (caso más general)
+                        else if (lookupResult instanceof Function) {
+                            return executeFunction((Function) lookupResult, args);
+                        }
+                        
+                        throw new RuntimeException("No se puede ejecutar '" + value + "' como función");
                     }
-                    
-                    // Ejecutar la función con los argumentos evaluados
-                    return executeFunction(function, args);
+                } else {
+                    // Si no hay hijos, simplemente devolver el valor de la variable
+                    return lookupResult;
                 }
-                // Si es una variable, devolver su valor
-                return lookupResult;
             }
             
-            // Si no se encuentra, devolver el valor como un símbolo
+            // Si no se encuentra en el ámbito y no tiene hijos, tratar como símbolo
             if (children.isEmpty()) {
                 return value;
             }
             
-            // Si hay hijos pero no es una función conocida, es un error
+            // Si llega aquí con hijos, es una función no definida
             throw new RuntimeException("Función no definida: " + value);
         }
     }
 
-        // Método auxiliar para comparar valores
+    // Método auxiliar para comparar valores
     private boolean compareValues(Object val1, Object val2) {
         if (val1 == null && val2 == null) {
             return true;
