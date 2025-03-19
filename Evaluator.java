@@ -120,24 +120,35 @@ public class Evaluator {
             }
         } else if (value.equals("LIST")) {
             // LIST verifica si el argumento es una lista
-            if (children.size() != 1) {
-                // Si el primer hijo es la comilla ('), entonces estamos ante 'a, y debemos evaluar a como un argumento
-                if (children.size() == 2 && children.get(0).getValue().equals("'")) {
-                    Object result = children.get(1); // Tomar el valor directamente sin evaluar
-                    return result instanceof List;
-                }
+            if (children.size() == 1) {
+                // Caso regular: un solo argumento
+                Object result = evaluate(children.get(0), scope);
+                return result instanceof List || (result instanceof ASTNode && ((ASTNode) result).getChildren().size() > 0);
+            } else if (children.size() == 2 && children.get(0).getValue().equals("'")) {
+                // Caso especial: expresión con comilla ('a o '(a b c))
+                ASTNode quotedNode = children.get(1);
+                // Si el nodo tiene hijos, es una lista
+                return quotedNode.getChildren().size() > 0;
+            } else {
                 throw new RuntimeException("LIST requiere exactamente un argumento");
             }
-            Object result = evaluate(children.get(0), scope);
-            return result instanceof List;
         } else if (value.equals("EQUAL")) {
             // EQUAL compara dos valores
-            if (children.size() != 2) {
+            if (children.size() == 2) {
+                // Caso regular: dos argumentos normales
+                Object val1 = evaluate(children.get(0), scope);
+                Object val2 = evaluate(children.get(1), scope);
+                return compareValues(val1, val2);
+            } else if (children.size() == 4 && 
+                       children.get(0).getValue().equals("'") && 
+                       children.get(2).getValue().equals("'")) {
+                // Caso especial: dos argumentos con comillas ('a 'b)
+                ASTNode val1 = children.get(1);
+                ASTNode val2 = children.get(3);
+                return compareASTNodes(val1, val2);
+            } else {
                 throw new RuntimeException("EQUAL requiere exactamente dos argumentos");
             }
-            Object val1 = evaluate(children.get(0), scope);
-            Object val2 = evaluate(children.get(1), scope);
-            return val1.equals(val2);
         } else if (value.equals("<")) {
             // < compara si el primero es menor que el segundo
             if (children.size() != 2) {
@@ -273,6 +284,60 @@ public class Evaluator {
             // Si hay hijos pero no es una función conocida, es un error
             throw new RuntimeException("Función no definida: " + value);
         }
+    }
+
+        // Método auxiliar para comparar valores
+    private boolean compareValues(Object val1, Object val2) {
+        if (val1 == null && val2 == null) {
+            return true;
+        }
+        if (val1 == null || val2 == null) {
+            return false;
+        }
+        
+        // Si ambos son números, compararlos como números
+        if (val1 instanceof Number && val2 instanceof Number) {
+            return ((Number)val1).doubleValue() == ((Number)val2).doubleValue();
+        }
+        
+        // Si ambos son ASTNode, comparar su estructura
+        if (val1 instanceof ASTNode && val2 instanceof ASTNode) {
+            return compareASTNodes((ASTNode)val1, (ASTNode)val2);
+        }
+        
+        // Por defecto, usar equals
+        return val1.equals(val2);
+    }
+
+    // Método auxiliar para comparar nodos AST recursivamente
+    private boolean compareASTNodes(ASTNode node1, ASTNode node2) {
+        if (node1 == null && node2 == null) {
+            return true;
+        }
+        if (node1 == null || node2 == null) {
+            return false;
+        }
+        
+        // Comparar valores
+        if (!node1.getValue().equals(node2.getValue())) {
+            return false;
+        }
+        
+        // Comparar hijos
+        List<ASTNode> children1 = node1.getChildren();
+        List<ASTNode> children2 = node2.getChildren();
+        
+        if (children1.size() != children2.size()) {
+            return false;
+        }
+        
+        // Comparar cada hijo recursivamente
+        for (int i = 0; i < children1.size(); i++) {
+            if (!compareASTNodes(children1.get(i), children2.get(i))) {
+                return false;
+            }
+        }
+        return true;
     }
     
     /**
