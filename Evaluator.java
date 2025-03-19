@@ -96,10 +96,26 @@ public class Evaluator {
                 }
                 
                 // Evaluar la condición
-                Object condition = evaluate(clauseChildren.get(0), scope);
+                Object condition;
+                ASTNode conditionNode = clauseChildren.get(0);
+                
+                if (conditionNode.getValue().equals("(")) {
+                    // Si es una expresión entre paréntesis, evaluarla
+                    condition = evaluate(conditionNode, scope);
+                } else {
+                    // Si no, evaluar directamente el nodo
+                    condition = evaluate(conditionNode, scope);
+                }
+                
                 if (isTruthy(condition)) {
                     // Si la condición es verdadera, evaluar y devolver el resultado
-                    return evaluate(clauseChildren.get(1), scope);
+                    
+                    // Manejo especial para valores citados (')
+                    if (clauseChildren.get(1).getValue().equals("'") && clauseChildren.size() > 2) {
+                        return clauseChildren.get(2);
+                    } else {
+                        return evaluate(clauseChildren.get(1), scope);
+                    }
                 }
             }
             // Si ninguna condición es verdadera, devolver nil
