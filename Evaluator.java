@@ -475,9 +475,28 @@ public class Evaluator {
         
         public List<String> getParamNames() {
             List<String> paramNames = new ArrayList<>();
-            for (ASTNode param : params.getChildren()) {
-                paramNames.add(param.getValue());
+            
+            // Caso 1: Si params es un nodo con valor y sin hijos (un solo parámetro)
+            if (!params.getValue().isEmpty() && params.getChildren().isEmpty()) {
+                paramNames.add(params.getValue());
+            } 
+            // Caso 2: Si params es un nodo con valor y con hijos
+            else if (!params.getValue().isEmpty() && !params.getChildren().isEmpty()) {
+                // Añadir el valor del nodo como primer parámetro
+                paramNames.add(params.getValue());
+                
+                // Añadir cada hijo como un parámetro adicional
+                for (ASTNode child : params.getChildren()) {
+                    paramNames.add(child.getValue());
+                }
             }
+            // Caso 3: Si params es un nodo sin valor pero con hijos
+            else if (params.getValue().isEmpty() && !params.getChildren().isEmpty()) {
+                for (ASTNode child : params.getChildren()) {
+                    paramNames.add(child.getValue());
+                }
+            }
+            
             return paramNames;
         }
         
