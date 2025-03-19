@@ -236,20 +236,36 @@ public class Evaluator {
             // Buscar en el ámbito si es una variable o función
             Object lookupResult = scope.getVariable(value);
             if (lookupResult != null) {
-                if (lookupResult instanceof Function) {
-                    // Si es una función, evaluarla con los argumentos
-                    Function func = (Function) lookupResult;
-                    List<Object> args = new ArrayList<>();
+                if (lookupResult instanceof Object[]) {
+                    // Si es una función, ejecutarla con los argumentos
+                    Object[] funcData = (Object[]) lookupResult;
+                    ASTNode params = (ASTNode) funcData[0];
+                    List<ASTNode> body = (List<ASTNode>) funcData[1];
                     
                     // Evaluar los argumentos
+                    List<Object> args = new ArrayList<>();
                     for (ASTNode child : children) {
                         args.add(evaluate(child, scope));
                     }
                     
-                    // Incrementar la capa y evaluar la función
-                    currentLayer++;
-                    Object result = executeFunction(func, args);
-                    currentLayer--;
+                    // Crear un nuevo ámbito para la función
+                    ContextualScope functionScope = scope.createSubScope();
+                    
+                    // Asignar los argumentos a los parámetros
+                    List<ASTNode> paramNodes = params.getChildren();
+                    if (args.size() != paramNodes.size()) {
+                        throw new RuntimeException("Número incorrecto de argumentos: esperados " + 
+                                                paramNodes.size() + ", recibidos " + args.size());
+                    }
+                    for (int i = 0; i < args.size(); i++) {
+                        functionScope.setVariable(paramNodes.get(i).getValue(), args.get(i));
+                    }
+                    
+                    // Evaluar el cuerpo de la función
+                    Object result = null;
+                    for (ASTNode bodyNode : body) {
+                        result = evaluate(bodyNode, functionScope);
+                    }
                     
                     return result;
                 }

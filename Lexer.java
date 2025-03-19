@@ -105,12 +105,13 @@ public class Lexer {
     /**
      * Verifica si una lista de tokens representa una expresión LISP válida.
      * Una expresión LISP válida debe contener al menos un paréntesis y un operador,
-     * o una función especial como QUOTE, SETQ, DEFUN, etc.
+     * ahora ya permite expresiones que comienzan con comilla simple ('), 
+     * ademas de hacer una excepción para funciones definidas por el usuario.
      *
      * @param tokens Lista de tokens a verificar
      * @return true si la expresión es válida, false en caso contrario
      */
-    public boolean isValidExpression(List<Token> tokens) {
+    public boolean isValidExpression(List<Token> tokens, Environment env) {
         // Si comienza con una comilla simple, consideramos que es una expresión de QUOTE válida
         if (tokens.size() > 0 && tokens.get(0).getValue().equals("'")) {
             return true;
@@ -120,20 +121,20 @@ public class Lexer {
         if (tokens.size() < 3) {
             return false;
         }
-
+    
         // El primer token debe ser un paréntesis abierto
         if (!tokens.get(0).getValue().equals("(")) {
             return false;
         }
-
+    
         // El último token debe ser un paréntesis cerrado
         if (!tokens.get(tokens.size() - 1).getValue().equals(")")) {
             return false;
         }
-
+    
         // El segundo token debe ser un operador, función especial o identificador de función definida por el usuario
         String secondToken = tokens.get(1).getValue();
-
+    
         // Lista de operadores y funciones especiales válidas
         Set<String> validOperators = new HashSet<>(Arrays.asList(
             "+", "-", "*", "/",         // Operaciones aritméticas
@@ -144,12 +145,17 @@ public class Lexer {
             "COND",                     // Condicional
             "PRINT"                     // Función auxiliar
         ));
-
+    
         // Verificar si el segundo token es un operador o función especial
         if (validOperators.contains(secondToken)) {
             return true;
         }
-
+    
+        // Verificar si el segundo token es una función definida por el usuario
+        if (env != null && env.getVariable(secondToken) != null) {
+            return true;
+        }
+    
         // Si no es un operador o función especial, verificar si hay al menos un operador en la expresión
         String operators = "+-*/";
         boolean hasOperators = false;
@@ -160,9 +166,17 @@ public class Lexer {
                 break;
             }
         }
-
+    
         // La expresión es válida si tiene al menos un operador o si es una función definida por el usuario
         return hasOperators;
+    }
+    
+    /**
+     * Sobrecarga del método isValidExpression para mantener compatibilidad
+     * con código existente que no pasa el entorno.
+     */
+    public boolean isValidExpression(List<Token> tokens) {
+        return isValidExpression(tokens, null);
     }
 
     /**

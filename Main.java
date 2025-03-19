@@ -124,7 +124,7 @@ public class Main {
                 System.out.println();
                 
                 // Validar que la expresión sea una expresión LISP válida
-                if (!lexer.isValidExpression(tokens)) {
+                if (!lexer.isValidExpression(tokens, globalEnv)) {
                     System.out.println("Error: La expresión '" + expression + "' no es una expresión LISP válida. Debe contener al menos un operador.");
                     continue;
                 }
