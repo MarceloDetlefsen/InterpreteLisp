@@ -38,7 +38,7 @@ public class Lexer {
      */
     public List<Token> tokenize(String code) {
         tokens.clear();
-        Matcher matcher = Pattern.compile("\\(|\\)|[a-zA-Z]+|[0-9]+|[-+*/=']|<|>").matcher(code);
+        Matcher matcher = Pattern.compile("\\(|\\)|[a-zA-Z]+|[0-9]+(\\.[0-9]+)?|[-+*/=']|<|>").matcher(code);
         while (matcher.find()) {
             tokens.add(new Token(matcher.group()));
         }
