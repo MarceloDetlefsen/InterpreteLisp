@@ -343,28 +343,28 @@ public class Evaluator {
         }
     }
     
-    /**
-     * Realiza análisis estático del AST para optimizaciones.
-     * 
-     * @param ast El nodo AST a analizar
-     * @return El resultado del análisis
-     */
-    public String staticAnalysis(ASTNode ast) {
-        // En implementaciones futuras, este método analizaría el AST para
-        // detectar errores o realizar optimizaciones antes de la ejecución
-        StringBuilder result = new StringBuilder();
-        result.append("Análisis estático para: ").append(ast.toString()).append("\n");
+    // /**
+    //  * Realiza análisis estático del AST para optimizaciones.
+    //  * 
+    //  * @param ast El nodo AST a analizar
+    //  * @return El resultado del análisis
+    //  */
+    // public String staticAnalysis(ASTNode ast) {
+    //     // En implementaciones futuras, este método analizaría el AST para
+    //     // detectar errores o realizar optimizaciones antes de la ejecución
+    //     StringBuilder result = new StringBuilder();
+    //     result.append("Análisis estático para: ").append(ast.toString()).append("\n");
         
-        // Contar nodos
-        int nodeCount = countNodes(ast);
-        result.append("Total de nodos: ").append(nodeCount).append("\n");
+    //     // Contar nodos
+    //     int nodeCount = countNodes(ast);
+    //     result.append("Total de nodos: ").append(nodeCount).append("\n");
         
-        // Identificar operaciones costosas
-        List<String> operations = findOperations(ast);
-        result.append("Operaciones encontradas: ").append(operations).append("\n");
+    //     // Identificar operaciones costosas
+    //     List<String> operations = findOperations(ast);
+    //     result.append("Operaciones encontradas: ").append(operations).append("\n");
         
-        return result.toString();
-    }
+    //     return result.toString();
+    // }
     
     /**
      * Ejecuta una capa específica de evaluación.

@@ -30,7 +30,7 @@ public class Main {
         System.out.println("Este intérprete posee: operaciones aritméticas, QUOTE, DEFUN, SETQ, predicados (ATOM, LIST, EQUAL, <, >), COND y paso de parámetros.");
         System.out.println("Funcionamiento: Ingrese la expresión LISP a ejecutar, es importante considerar que puede ejecutar varias líneas");
         System.out.println("Si así lo desea, presione 'Enter' en la linea terminada en ')' para ejecutar la expresión. y pasar a la siguiente");
-        System.out.println("Nota: Para salir del intérprete debe escribir 'exit' o 'quit'.");
+        System.out.println("Nota: Para salir del intérprete debe escribir 'exit' o 'salir'.");
 
         // Ciclo principal del intérprete
         while (true) {
@@ -49,8 +49,8 @@ public class Main {
             String fullInput = codeBuilder.toString().trim();
             
             // Comandos para salir del intérprete
-            if (fullInput.equalsIgnoreCase("exit") || fullInput.equalsIgnoreCase("quit")) {
-                System.out.println("¡Hasta luego!");
+            if (fullInput.equalsIgnoreCase("exit") || fullInput.equalsIgnoreCase("salir")) {
+                System.out.println("¡Gracias por utilizar este intérprete Lisp, espero te haya sido útil!");
                 break;
             }
             
