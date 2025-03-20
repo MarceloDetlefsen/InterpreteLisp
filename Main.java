@@ -7,7 +7,7 @@ import java.util.Scanner;
  * Ing. Douglas Barrios
  * @author: Marcelo Detlefsen, Jose Rivera, Fabián Prado
  * Creación: 11/03/2025
- * última modificación: 17/03/2025
+ * última modificación: 20/03/2025
  * File Name: Main.java
  * Descripción: Clase principal que utiliza el Lexer, Parser y Evaluator para:
  * 1. Tokenizar la expresión LISP.
@@ -26,11 +26,11 @@ public class Main {
         initializeBuiltins(globalEnv);
         Evaluator evaluator = new Evaluator();
 
-        System.out.println("\nIntérprete LISP");
-        System.out.println("Implementa: operaciones aritméticas, QUOTE, DEFUN, SETQ, predicados (ATOM, LIST, EQUAL, <, >), COND y paso de parámetros.");
-        System.out.println("Ingrese la expresión LISP (puede usar varias líneas).");
-        System.out.println("Al terminar de ingresarla, presione Enter en una línea vacía para finalizar:");
-        System.out.println("Escriba 'exit' o 'quit' para salir del intérprete.");
+        System.out.println("\nBienvenido al Intérprete LISP");
+        System.out.println("Este intérprete posee: operaciones aritméticas, QUOTE, DEFUN, SETQ, predicados (ATOM, LIST, EQUAL, <, >), COND y paso de parámetros.");
+        System.out.println("Funcionamiento: Ingrese la expresión LISP a ejecutar, es importante considerar que puede ejecutar varias líneas");
+        System.out.println("Si así lo desea, presione 'Enter' en la linea terminada en ')' para ejecutar la expresión. y pasar a la siguiente");
+        System.out.println("Nota: Para salir del intérprete debe escribir 'exit' o 'quit'.");
 
         // Ciclo principal del intérprete
         while (true) {

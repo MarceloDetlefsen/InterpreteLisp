@@ -7,7 +7,7 @@ import java.util.regex.*;
  * Ing. Douglas Barrios
  * @author: Marcelo Detlefsen, Jose Rivera, Fabián Prado
  * Creación: 01/03/2025
- * última modificación: 18/03/2025
+ * última modificación: 20/03/2025
  * File Name: Lexer.java
  * Descripción: Clase que se encarga de analizar la expresión LISP.
  * 
@@ -38,7 +38,6 @@ public class Lexer {
      */
     public List<Token> tokenize(String code) {
         tokens.clear();
-        // Actualizado el regex para capturar '<' y '>' como tokens separados
         Matcher matcher = Pattern.compile("\\(|\\)|[a-zA-Z]+|[0-9]+|[-+*/=']|<|>").matcher(code);
         while (matcher.find()) {
             tokens.add(new Token(matcher.group()));
@@ -46,29 +45,29 @@ public class Lexer {
         return tokens;
     }
 
-    /**
-     * Corrige errores en la lista de tokens.
-     * Este método se implementará en futuras versiones.
-     *
-     * @param tokens Lista de tokens que posiblemente contiene errores
-     * @return Lista de tokens corregida
-     */
-    public List<Token> fixErrors(List<Token> tokens) {
-        // Este método se implementará más adelante, para el propósito de esta entrega no es necesario.
-        return tokens;
-    }
+    // /**
+    //  * Corrige errores en la lista de tokens.
+    //  * Este método se implementará en futuras versiones.
+    //  *
+    //  * @param tokens Lista de tokens que posiblemente contiene errores
+    //  * @return Lista de tokens corregida
+    //  */
+    // public List<Token> fixErrors(List<Token> tokens) {
+    //     // Este método se implementará más adelante, para el propósito de esta entrega no es necesario.
+    //     return tokens;
+    // }
 
-    /**
-     * Analiza la intención del usuario basado en los tokens.
-     * Este método se implementará en futuras versiones.
-     *
-     * @param tokens Lista de tokens a analizar
-     * @return Lista de tokens procesada según la intención detectada
-     */
-    public List<Token> detectIntent(List<Token> tokens) {
-        // Este método se implementará más adelante, para el propósito de esta entrega no es necesario.
-        return tokens;
-    }
+    // /**
+    //  * Analiza la intención del usuario basado en los tokens.
+    //  * Este método se implementará en futuras versiones.
+    //  *
+    //  * @param tokens Lista de tokens a analizar
+    //  * @return Lista de tokens procesada según la intención detectada
+    //  */
+    // public List<Token> detectIntent(List<Token> tokens) {
+    //     // Este método se implementará más adelante, para el propósito de esta entrega no es necesario.
+    //     return tokens;
+    // }
 
     /**
      * Verifica si los paréntesis en el código están balanceados.
@@ -255,7 +254,6 @@ public class Lexer {
                 }
                 continue;
             }
-            
             // Avanzar si se encuentra otro carácter
             i++;
         }

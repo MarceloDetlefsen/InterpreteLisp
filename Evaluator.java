@@ -9,11 +9,12 @@ import java.util.Map;
  * Ing. Douglas Barrios
  * @author: Marcelo Detlefsen, Jose Rivera, Fabián Prado
  * Creación: 17/03/2025
- * última modificación: 19/03/2025
+ * última modificación: 20/03/2025
  * File Name: Evaluator.java
  * Descripción: Clase que se encarga de evaluar el árbol de sintaxis abstracta.
  * 
  * Implementación basada en el diseño del intérprete proporcionado en el diagrama UML.
+ * Código original generado con la asistencia de Claude y Deepseek.
  */
 
 public class Evaluator {
@@ -28,8 +29,7 @@ public class Evaluator {
     private Map<ASTNode, Object> evaluationCache;
     
     /**
-     * Constructor para el evaluador.
-     * Inicializa la capa de evaluación y el cache.
+     * Constructor de la clase Evaluator.
      */
     public Evaluator() {
         this.currentLayer = 0;
@@ -302,8 +302,8 @@ public class Evaluator {
                         // Ejecutar la función
                         return executeFunction(function, args);
                     } else {
-                        // CORRECCIÓN CLAVE: Si lookupResult no es una función
-                        // pero el nodo tiene hijos, podría ser una variable que contiene una función (como f en aplicar)
+                        //Si lookupResult no es una función pero el nodo tiene hijos, 
+                        //podría ser una variable que contiene una función (como f en aplicar)
                         
                         // Evaluar los argumentos primero
                         List<Object> args = new ArrayList<>();
@@ -341,60 +341,6 @@ public class Evaluator {
             // Si llega aquí con hijos, es una función no definida
             throw new RuntimeException("Función no definida: " + value);
         }
-    }
-
-    // Método auxiliar para comparar valores
-    private boolean compareValues(Object val1, Object val2) {
-        if (val1 == null && val2 == null) {
-            return true;
-        }
-        if (val1 == null || val2 == null) {
-            return false;
-        }
-        
-        // Si ambos son números, compararlos como números
-        if (val1 instanceof Number && val2 instanceof Number) {
-            return ((Number)val1).doubleValue() == ((Number)val2).doubleValue();
-        }
-        
-        // Si ambos son ASTNode, comparar su estructura
-        if (val1 instanceof ASTNode && val2 instanceof ASTNode) {
-            return compareASTNodes((ASTNode)val1, (ASTNode)val2);
-        }
-        
-        // Por defecto, usar equals
-        return val1.equals(val2);
-    }
-
-    // Método auxiliar para comparar nodos AST recursivamente
-    private boolean compareASTNodes(ASTNode node1, ASTNode node2) {
-        if (node1 == null && node2 == null) {
-            return true;
-        }
-        if (node1 == null || node2 == null) {
-            return false;
-        }
-        
-        // Comparar valores
-        if (!node1.getValue().equals(node2.getValue())) {
-            return false;
-        }
-        
-        // Comparar hijos
-        List<ASTNode> children1 = node1.getChildren();
-        List<ASTNode> children2 = node2.getChildren();
-        
-        if (children1.size() != children2.size()) {
-            return false;
-        }
-        
-        // Comparar cada hijo recursivamente
-        for (int i = 0; i < children1.size(); i++) {
-            if (!compareASTNodes(children1.get(i), children2.get(i))) {
-                return false;
-            }
-        }
-        return true;
     }
     
     /**
@@ -476,6 +422,60 @@ public class Evaluator {
     }
     
     // Métodos auxiliares
+
+    // Método auxiliar para comparar valores
+    private boolean compareValues(Object val1, Object val2) {
+        if (val1 == null && val2 == null) {
+            return true;
+        }
+        if (val1 == null || val2 == null) {
+            return false;
+        }
+        
+        // Si ambos son números, compararlos como números
+        if (val1 instanceof Number && val2 instanceof Number) {
+            return ((Number)val1).doubleValue() == ((Number)val2).doubleValue();
+        }
+        
+        // Si ambos son ASTNode, comparar su estructura
+        if (val1 instanceof ASTNode && val2 instanceof ASTNode) {
+            return compareASTNodes((ASTNode)val1, (ASTNode)val2);
+        }
+        
+        // Por defecto, usar equals
+        return val1.equals(val2);
+    }
+
+    // Método auxiliar para comparar nodos AST recursivamente
+    private boolean compareASTNodes(ASTNode node1, ASTNode node2) {
+        if (node1 == null && node2 == null) {
+            return true;
+        }
+        if (node1 == null || node2 == null) {
+            return false;
+        }
+        
+        // Comparar valores
+        if (!node1.getValue().equals(node2.getValue())) {
+            return false;
+        }
+        
+        // Comparar hijos
+        List<ASTNode> children1 = node1.getChildren();
+        List<ASTNode> children2 = node2.getChildren();
+        
+        if (children1.size() != children2.size()) {
+            return false;
+        }
+        
+        // Comparar cada hijo recursivamente
+        for (int i = 0; i < children1.size(); i++) {
+            if (!compareASTNodes(children1.get(i), children2.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
     
     /**
      * Determina si un valor es considerado verdadero en el contexto de LISP.

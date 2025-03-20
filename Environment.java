@@ -13,6 +13,7 @@ import java.util.Map;
  * Descripción: Clase que representa el entorno de ejecución para el intérprete LISP.
  * 
  * Implementación basada en el diseño del intérprete proporcionado en el diagrama UML.
+ * Código original generado con la asistencia de Claude y Deepseek.
  */
 
 /**

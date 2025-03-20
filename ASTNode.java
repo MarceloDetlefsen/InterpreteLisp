@@ -23,8 +23,10 @@ public class ASTNode
      */
     private List<ASTNode> children;
 
-    /*
-     * constructor
+    /**
+     * Constructor que crea un nuevo nodo con el valor especificado.
+     *
+     * @param value El valor del nodo
      */
     public ASTNode(String value) {
         this.value = value;

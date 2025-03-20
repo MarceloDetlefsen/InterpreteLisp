@@ -2,9 +2,7 @@
 Este proyecto es un intérprete de LISP desarrollado en Java. Permite evaluar expresiones LISP básicas, incluyendo operaciones aritméticas, definición de funciones, manejo de variables, predicados, condicionales y más. El intérprete sigue las especificaciones del lenguaje LISP tradicional, con algunas adaptaciones y no con todas las funciones incluidas
 
 ## 🎥 Link para acceder al video del funcionamiento
-    ```markdown
-    [Ver video del funcionamiento](https://drive.google.com/file/d/1bKxVUoVy75kDowL18tBAPAXez4wCdgh0/view?usp=sharing)
-    ```
+[Ver video del funcionamiento](https://drive.google.com/file/d/1bKxVUoVy75kDowL18tBAPAXez4wCdgh0/view?usp=sharing)
 
 # 🛠️ Instalación y Ejecución
 1. Clonar el repositorio:
@@ -116,6 +114,8 @@ z
 # 🛠️ Ejemplos de programas completos funcionales con recursividad
 
 ## 🌀 Fibonacci
+Este programa implementa la secuencia de Fibonacci, una serie de números en la que cada número es la suma de los dos anteriores, comenzando con 0 y 1. La secuencia de Fibonacci es una de las secuencias más conocidas en matemáticas y tiene aplicaciones en diversas áreas como la informática, la biología y la teoría de números.
+
 ```lisp
 (DEFUN fibonacci (n)
 (COND
@@ -124,10 +124,12 @@ z
     (T (+ (fibonacci (- n 1)) (fibonacci (- n 2))))
     )
 )
-(fibonacci 5)
+(fibonacci 9)
 ```
 
 ## ❕ Factorial
+Este programa calcula el factorial de un número, que es el producto de todos los enteros positivos menores o iguales a ese número. El factorial de n (denotado como n!) es una función matemática importante en combinatoria, análisis y álgebra.
+
 ```lisp
 (DEFUN factorial (n)
 (COND
@@ -138,7 +140,9 @@ z
 (factorial 5)
 ```
 
-##  🌡️ Conversión de Celsuis a Fahrenheit
+## 🌡️ Conversión de Celsius a Fahrenheit
+Este programa convierte una temperatura de Celsius a Fahrenheit utilizando una función recursiva. La fórmula utilizada es la tradicional para la conversión de temperaturas, donde 0 grados Celsius es igual a 32 grados Fahrenheit, y cada incremento de 1 grado Celsius se convierte en un incremento de 1.8 grados Fahrenheit.
+
 ```lisp
 (DEFUN conversion (c)
 (COND

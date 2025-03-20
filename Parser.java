@@ -7,7 +7,7 @@ import java.util.List;
  * Ing. Douglas Barrios
  * @author: Marcelo Detlefsen, Jose Rivera, Fabián Prado
  * Creación: 11/03/2025
- * última modificación: 18/03/2025
+ * última modificación: 20/03/2025
  * File Name: Parser.java
  * Descripción: Clase que se encarga de analizar la expresión LISP.
  * 
@@ -20,13 +20,19 @@ public class Parser
     private List<Token> tokens;
     private int currentTokenIndex;
 
-    //Constructor
+    /**
+     * Constructor de la clase Parser.
+     * @param tokens La lista de tokens a analizar.
+     */
     public Parser(List<Token> tokens) {
         this.tokens = tokens;
         this.currentTokenIndex = 0;
     }
 
-    // Método que analiza la expresión LISP
+    /**
+     * Método que inicia el análisis de la expresión LISP.
+     * @return Una lista de nodos del árbol de sintaxis abstracta.
+     */ 
     public List<ASTNode> parse() {
         List<ASTNode> expressions = new ArrayList<>();
         while (currentTokenIndex < tokens.size()) {
@@ -86,7 +92,6 @@ public class Parser
             consumeAny(); // Consume el token QUOTE
             ASTNode quoteNode = new ASTNode("QUOTE");
             
-            // En lugar de agregar todo como un string, analiza la expresión citada como un subárbol
             if (peek().getValue().equals("(")) {
                 quoteNode.addChild(parseExpression());
             } else {
@@ -165,8 +170,9 @@ public class Parser
     }
 
     /**
-     * parseAtom(String) intenta convertir el valor en un número (int/double).
-     * Si no es número, se queda como string (un símbolo).
+     * Método que analiza un átomo de la expresión LISP.
+     * @param rawValue El valor del átomo.
+     * @return Un nodo del árbol de sintaxis abstracta.
      */
     private ASTNode parseAtom(String rawValue) {
         try {
