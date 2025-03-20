@@ -1,9 +1,9 @@
 # Intérprete Lisp
 Este proyecto es un intérprete de LISP desarrollado en Java. Permite evaluar expresiones LISP básicas, incluyendo operaciones aritméticas, definición de funciones, manejo de variables, predicados, condicionales y más. El intérprete sigue las especificaciones del lenguaje LISP tradicional, con algunas adaptaciones y no con todas las funciones incluidas
 
-# Link para acceder al video del funcionamiento
-    ```bash
-    https://drive.google.com/file/d/1bKxVUoVy75kDowL18tBAPAXez4wCdgh0/view?usp=sharing
+## 🎥 Link para acceder al video del funcionamiento
+    ```markdown
+    [Ver video del funcionamiento](https://drive.google.com/file/d/1bKxVUoVy75kDowL18tBAPAXez4wCdgh0/view?usp=sharing)
     ```
 
 # 🛠️ Instalación y Ejecución
