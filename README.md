@@ -156,51 +156,36 @@ Este programa convierte una temperatura de Celsius a Fahrenheit utilizando una f
 ## UML de Clases
 ![image](https://github.com/user-attachments/assets/097f1a2f-00ef-49d2-b83d-6091ceabbeba)
 
-Main: 
+*Main: 
+    *Recibe la entrada del usuario (una expresión). 
+    *Llama a las clases Lexer, Parser, Evaluator y Environment para procesar la expresión. 
+    *Muestra el resultado al usuario. 
 
-Recibe la entrada del usuario (una expresión). 
+*Token:  
+    *Objeto básico que representa cada fragmento (token) de la expresión. 
 
-Llama a las clases Lexer, Parser, Evaluator y Environment para procesar la expresión. 
+*Lexer:  
+    *Divide la expresión en tokens 
 
-Muestra el resultado al usuario. 
+*Parser:  
+    *Convierte los tokens en un árbol de sintaxis abstracta 
 
-Token:  
+*ASTNode: 
+    *Representa los nodos del árbol de sintaxis abstracta 
 
-Objeto básico que representa cada fragmento (token) de la expresión. 
+*Evaluator: 
+    *Recorre el AST y evalúa las operaciones o busca variables, para ello emplea métodos: 
+    *Evaluate, evalúa el nodo 
+    *CompareValues, compara dos valores 
+    *IntrospectCode, Devuelve una representación legible del código  
+    *ExecuteFunction, ejecuta una función con argumentos  
+    *FindOperations, Busca operaciones en el AST 
 
-Lexer:  
+*Environment:  
+    *Gestiona las variables y funciones almacenar, buscar y definir.  
 
-Divide la expresión en tokens 
-
-Parser:  
-
-Convierte los tokens en un árbol de sintaxis abstracta 
-
-ASTNode: 
-
-Representa los nodos del árbol de sintaxis abstracta 
-
-Evaluator: 
-
-Recorre el AST y evalúa las operaciones o busca variables, para ello emplea métodos: 
-
-Evaluate, evalúa el nodo 
-
-CompareValues, compara dos valores 
-
-IntrospectCode, Devuelve una representación legible del código  
-
-ExecuteFunction, ejecuta una función con argumentos  
-
-FindOperations, Busca operaciones en el AST 
-
-Environment:  
-
-Gestiona las variables y funciones almacenar, buscar y definir.  
-
-ContextualScope:  
-
-Es la interfaz para environment.  
+*ContextualScope:  
+    *Es la interfaz para environment.  
 
 # Autores:
 👨‍💻 Marcelo Detlefsen
