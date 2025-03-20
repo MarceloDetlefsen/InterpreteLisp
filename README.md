@@ -188,7 +188,7 @@ Este programa convierte una temperatura de Celsius a Fahrenheit utilizando una f
   - Es la interfaz para Environment.
  
   
-#UML de Secuencias: 
+## UML de Secuencias: 
 ![image](https://github.com/user-attachments/assets/97eafc55-7952-4ac3-827e-c336da6832fa)
 
 - El diagrama de secuencias describe cómo se desarrolla el flujo del programa hasta que llega a una respuesta.  
@@ -203,7 +203,7 @@ Este programa convierte una temperatura de Celsius a Fahrenheit utilizando una f
         - Devuelve el valor de las variables a Evaluator.  
 - El resultado se devuelve a Main y se muestra.
 
-#UML de Casos de Usos:
+## UML de Casos de Usos:
 ![image](https://github.com/user-attachments/assets/43e65f55-6cd8-4380-9b33-99c8a25d9f43)
 
 - Actores principales:  
