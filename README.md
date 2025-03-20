@@ -11,14 +11,15 @@ Este proyecto es un intérprete de LISP desarrollado en Java. Permite evaluar ex
     cd InterpreteLisp
     ```
 
-2. Compilar el código:
-    ```bash
-    javac Main.java
+2. Compilar el intérprete:
+    ```bash 
+    javac -d out src/main/java/com/InterpreteLisp/*.java
     ```
 
-3. Ejecutar el programa.
+3. Ejecutar el intérprete.
     ```bash
-    java Main
+    cd out
+    java com.InterpreteLisp.Main
     ```
 
 # 📚 Ejemplos para Funciones del Programa
@@ -34,7 +35,7 @@ Estos son algunos ejemplos de expresiones LISP que puedes usar para probar el pr
 (+ (* 3 4) (- 10 5))
 ```
 
-## 2. Instrucción QUOTE o ‘ (single quote, para interrumpir el proceso de evaluación de expresiones)
+## 2. Instrucción QUOTE o '
 ```lisp
 (QUOTE (a b c))
 '(1 2 3)
