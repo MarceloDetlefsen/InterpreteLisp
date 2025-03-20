@@ -90,32 +90,26 @@ public class Evaluator {
         } else if (value.equals("COND")) {
             // COND evalúa condiciones en orden y devuelve el primer resultado para una condición verdadera
             for (ASTNode clause : children) {
-                List<ASTNode> clauseChildren = clause.getChildren();
-                if (clauseChildren.size() < 2) {
-                    throw new RuntimeException("Cada cláusula de COND debe tener al menos una condición y un resultado");
+                // Cada cláusula debe ser un nodo con valor "CLAUSE" y dos hijos: condición y resultado
+                if (!clause.getValue().equals("CLAUSE") || clause.getChildren().size() != 2) {
+                    throw new RuntimeException("Formato inválido para cláusula de COND");
                 }
                 
-                // Evaluar la condición
-                Object condition;
+                List<ASTNode> clauseChildren = clause.getChildren();
                 ASTNode conditionNode = clauseChildren.get(0);
+                ASTNode resultNode = clauseChildren.get(1);
                 
-                if (conditionNode.getValue().equals("(")) {
-                    // Si es una expresión entre paréntesis, evaluarla
-                    condition = evaluate(conditionNode, scope);
+                // Evaluar la condición (caso especial para T)
+                Object condition;
+                if (conditionNode.getValue().equals("T") && conditionNode.getChildren().isEmpty()) {
+                    condition = true;
                 } else {
-                    // Si no, evaluar directamente el nodo
                     condition = evaluate(conditionNode, scope);
                 }
                 
                 if (isTruthy(condition)) {
                     // Si la condición es verdadera, evaluar y devolver el resultado
-                    
-                    // Manejo especial para valores citados (')
-                    if (clauseChildren.get(1).getValue().equals("'") && clauseChildren.size() > 2) {
-                        return clauseChildren.get(2);
-                    } else {
-                        return evaluate(clauseChildren.get(1), scope);
-                    }
+                    return evaluate(resultNode, scope);
                 }
             }
             // Si ninguna condición es verdadera, devolver nil
@@ -261,6 +255,21 @@ public class Evaluator {
             }
             
             return result;
+        } else if (value.equals("=")) {
+            // = compara si los valores son iguales
+            if (children.size() != 2) {
+                throw new RuntimeException("= requiere exactamente dos argumentos");
+            }
+            Object val1 = evaluate(children.get(0), scope);
+            Object val2 = evaluate(children.get(1), scope);
+            
+            // Si son números, comparar como números
+            if (val1 instanceof Number && val2 instanceof Number) {
+                return ((Number)val1).doubleValue() == ((Number)val2).doubleValue();
+            }
+            
+            // Caso contrario, usar el método de comparación genérico
+            return compareValues(val1, val2);
         } else {
             // Si no es un operador especial, puede ser:
             // 1. Un número literal
@@ -273,10 +282,10 @@ public class Evaluator {
             } catch (NumberFormatException e) {
                 // No es un número literal
             }
-            
+
             // Buscar en el ámbito actual
             Object lookupResult = scope.getVariable(value);
-            
+
             if (lookupResult != null) {
                 // Si hay hijos, podría ser una llamada a función
                 if (!children.isEmpty()) {

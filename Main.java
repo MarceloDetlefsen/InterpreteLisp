@@ -172,6 +172,7 @@ public class Main {
         env.defineSystemFunction("-", new BuiltinFunction("-"));
         env.defineSystemFunction("*", new BuiltinFunction("*"));
         env.defineSystemFunction("/", new BuiltinFunction("/"));
+        env.defineSystemFunction("=", new BuiltinFunction("="));
         
         // Predicados
         env.defineSystemFunction("ATOM", new BuiltinFunction("ATOM"));

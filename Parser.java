@@ -97,7 +97,55 @@ public class Parser
             consume(")");
             return quoteNode;
         }
-        else { // si no es quote: 
+        // Manejo especial para COND
+        else if (peek().getValue().equals("COND")) {
+            Token condToken = consumeAny(); // Consume el token COND
+            ASTNode condNode = new ASTNode(condToken.getValue());
+            
+            // Procesar cada cláusula del COND
+            while (!peek().getValue().equals(")")) {
+                // Cada cláusula debe comenzar con un paréntesis
+                if (!peek().getValue().equals("(")) {
+                    throw new RuntimeException("Expected '(' at start of COND clause");
+                }
+                
+                consume("("); // Consumir el paréntesis de apertura de la cláusula
+                
+                // Crear un nodo para esta cláusula
+                ASTNode clauseNode = new ASTNode("CLAUSE");
+                
+                // Procesar la condición de la cláusula
+                if (peek().getValue().equals("(")) {
+                    // La condición es una expresión entre paréntesis
+                    clauseNode.addChild(parseExpression());
+                } else {
+                    // La condición es un átomo (como T)
+                    clauseNode.addChild(parseAtom(consumeAny().getValue()));
+                }
+                
+                // Procesar el resultado de la cláusula
+                if (peek().getValue().equals("'")) {
+                    // Si el resultado es una expresión quotada
+                    consume("'");
+                    ASTNode quoteNode = new ASTNode("QUOTE");
+                    quoteNode.addChild(parseAtom(consumeAny().getValue()));
+                    clauseNode.addChild(quoteNode);
+                } else if (peek().getValue().equals("(")) {
+                    // Si el resultado es una expresión entre paréntesis
+                    clauseNode.addChild(parseExpression());
+                } else {
+                    // Si el resultado es un átomo
+                    clauseNode.addChild(parseAtom(consumeAny().getValue()));
+                }
+                
+                consume(")"); // Consumir el paréntesis de cierre de la cláusula
+                condNode.addChild(clauseNode);
+            }
+            
+            consume(")"); // Consumir el paréntesis de cierre del COND
+            return condNode;
+        }
+        else { // si no es quote o COND: 
             Token firstToken = consumeAny();
             ASTNode node = new ASTNode(firstToken.getValue());
     

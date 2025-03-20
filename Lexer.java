@@ -39,7 +39,7 @@ public class Lexer {
     public List<Token> tokenize(String code) {
         tokens.clear();
         // Actualizado el regex para capturar '<' y '>' como tokens separados
-        Matcher matcher = Pattern.compile("\\(|\\)|[a-zA-Z]+|[0-9]+|[-+*/']|<|>").matcher(code);
+        Matcher matcher = Pattern.compile("\\(|\\)|[a-zA-Z]+|[0-9]+|[-+*/=']|<|>").matcher(code);
         while (matcher.find()) {
             tokens.add(new Token(matcher.group()));
         }
