@@ -22,7 +22,7 @@ Este proyecto es un intérprete de LISP desarrollado en Java. Permite evaluar ex
 Estos son algunos ejemplos de expresiones LISP que puedes usar para probar el programa:
 
 ## 1. Operaciones aritméticas
-    ```bash
+    ```lisp
     (+ 3 4)
     (- 10 5)
     (* 6 7)
@@ -32,7 +32,7 @@ Estos son algunos ejemplos de expresiones LISP que puedes usar para probar el pr
     ```
 
 ## 2. Instrucción QUOTE o ‘ (single quote, para interrumpir el proceso de evaluación de expresiones)
-    ```bash
+    ```lisp
     (QUOTE (a b c))
     '(1 2 3)
     (QUOTE (+ 3 4))
@@ -40,7 +40,7 @@ Estos son algunos ejemplos de expresiones LISP que puedes usar para probar el pr
     ```
 
 ## 3. Definición de funciones (DEFUN)
-    ```bash
+    ```lisp
     (SETQ x 10)
     (+ x 5)
     (SETQ y (+ 3 4))
@@ -50,7 +50,7 @@ Estos son algunos ejemplos de expresiones LISP que puedes usar para probar el pr
     ```
 
 ## 4. SETQ
-    ```bash
+    ```lisp
     (DEFUN suma (a b) (+ a b))
     (suma 5 7)
     (DEFUN cuadrado (x) (* x x))
@@ -58,7 +58,7 @@ Estos son algunos ejemplos de expresiones LISP que puedes usar para probar el pr
     ```
 
 ## 5. Predicados (ATOM, LIST, EQUAL, <, >)
-    ```bash
+    ```lisp
     (ATOM 'a)
     (ATOM '(a b c))
     (LIST 'a)
@@ -73,33 +73,33 @@ Estos son algunos ejemplos de expresiones LISP que puedes usar para probar el pr
     ```
 
 ## 6. Condicionales (COND)
-    ```bash
+    ```lisp
     (COND ((> 3 2) 'mayor) (T 'menor))
     (COND ((< 3 2) 'menor) (T 'mayor))
     (COND ((< 5 1) 'uno) ((< 5 3) 'dos) (T 'tres))
     ```
 
 ## 7. Paso de parámetros. (un parámetro puede ser incluso una función)
-    ```bash
+    ```lisp
     (DEFUN aplicar (f x) (f x))
     (DEFUN cuadrado (x) (* x x))
     (aplicar cuadrado 4)
     ```
 
-    ```bash
+    ```lisp
     (DEFUN aplicar (f x) (f x))
     (DEFUN doble (x) (* 2 x))
     (aplicar doble 5)
     ```
 
-    ```bash
+    ```lisp
     (DEFUN componer (f g x) (f (g x)))
     (DEFUN doble (x) (* 2 x))
     (componer doble cuadrado 3)
     ```
 
 ## ❌ Pruebas de Errores
-    ```bash
+    ```lisp
     (/ 5 0)
     (suma 1)
     (COND)
@@ -111,35 +111,35 @@ Estos son algunos ejemplos de expresiones LISP que puedes usar para probar el pr
 # 🛠️ Ejemplos de programas completos funcionales con recursividad
 
 ## 🌀 Fibonacci
-    ```bash
+    ```lisp
     (DEFUN fibonacci (n)
     (COND
         ((= n 0) 0)
         ((= n 1) 1)
         (T (+ (fibonacci (- n 1)) (fibonacci (- n 2))))
-    )
+        )
     )
     (fibonacci 5)
     ```
 
 ## ❕ Factorial
-    ```bash
+    ```lisp
     (DEFUN factorial (n)
     (COND
         ((= n 0) 1)
         (T (* n (factorial (- n 1))))
-    )
+        )
     )
     (factorial 5)
     ```
 
 ##  🌡️ Conversión de Celsuis a Fahrenheit
-    ```bash
+    ```lisp
     (DEFUN conversion (c)
     (COND
         ((= c 0) 32)
         (T (+ (/ 9 5) (conversion (- c 1))))
-    )
+        )
     )
     (conversion 25)
     ```
