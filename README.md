@@ -154,6 +154,32 @@ Este programa convierte una temperatura de Celsius a Fahrenheit utilizando una f
 (conversion 25)
 ```
 
+# 📋 Programas puestos a prueba durante la presentación
+
+##  🌀 Fibonacci
+Este programa implementa la secuencia de Fibonacci utilizando una función recursiva. La función `FIBONACCI` toma un número `N` como argumento y devuelve el `N`-ésimo número de la secuencia de Fibonacci. Si `N` es 0 o 1, la función devuelve 1. Para otros valores de `N`, la función devuelve la suma de los dos números anteriores en la secuencia.
+
+```lisp
+(DEFUN FIBONACCI (N)
+ (COND ((= N 0) 1)                   
+    ((= N 1) 1)                   
+    (T (+ (FIBONACCI (- N 1))     
+          (FIBONACCI (- N 2))))))
+(FIBONACCI 11)
+```
+
+## 🪜 Definir la base y el exponentes y realizar la potenciación
+Este código define una función en Lisp llamada `MALAN` que realiza la potenciación de un número. La función toma dos argumentos: `M` (la base) y `N` (el exponente). Utiliza recursión para calcular el resultado de elevar `M` a la potencia de `N`.
+
+```lisp
+(DEFUN MALAN (M N)
+  (COND ( (= N 0) 1)
+        (T (* M (MALAN M (- N 1)))
+        )
+  ))
+(MALAN 2 3)
+```
+
 # 📊 Diagramas UML
 
 ## Diagrama de Clases
