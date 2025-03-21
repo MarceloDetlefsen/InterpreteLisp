@@ -153,25 +153,27 @@ Este programa convierte una temperatura de Celsius a Fahrenheit utilizando una f
 )
 (conversion 25)
 ```
-## UML de Clases
+
+# 📊 Diagramas UML
+
+## Diagrama de Clases
 ![image](https://github.com/user-attachments/assets/097f1a2f-00ef-49d2-b83d-6091ceabbeba)
 El diagrama de clases muestra las clases utilizadas y como se conectan unas con otras. 
 - Clases:  
-  - Main
-  - Token:
-  - Lexer:
-  - Parser:
-  - ASTNode:
-  - Evaluator:
-  - Environment:
-  - ContextualScope (interface):  
- 
-  
-## UML de Secuencias: 
+    - Lexer: Analiza el código fuente y lo convierte en una secuencia de tokens.
+    - Token: Representa una unidad léxica del código fuente, como palabras clave, identificadores, operadores, etc.
+    - Parser: Convierte la secuencia de tokens en una estructura de datos (AST) que representa la sintaxis del programa.
+    - ASTNode: Nodo del Árbol de Sintaxis Abstracta (AST) que representa una construcción sintáctica del lenguaje.
+    - Evaluator: Ejecuta el AST y evalúa las expresiones LISP, produciendo resultados.
+    - Environment: Mantiene el estado de las variables y funciones definidas durante la evaluación.
+    - ContextualScope: Interface dentro de Environment que ayuda a definir el contexto dentro del ámbito contextual.
+    - Main: Punto de entrada del programa que inicializa y ejecuta el intérprete.
+
+## Diaigrama de Secuencias: 
 ![image](https://github.com/user-attachments/assets/97eafc55-7952-4ac3-827e-c336da6832fa)
 El diagrama de secuencias describe cómo se desarrolla el flujo del programa hasta que llega a una respuesta.  
 
-## UML de Casos de Usos:
+## Diagrama de Casos de Usos:
 ![image](https://github.com/user-attachments/assets/43e65f55-6cd8-4380-9b33-99c8a25d9f43)
 Muestra el comportamiento esperado del sistema en relación a sus actores y sus clases. 
 
